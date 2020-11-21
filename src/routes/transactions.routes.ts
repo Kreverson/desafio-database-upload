@@ -1,26 +1,37 @@
-import { Router } from 'express';
+import { json, Router } from 'express';
 
-// import TransactionsRepository from '../repositories/TransactionsRepository';
-// import CreateTransactionService from '../services/CreateTransactionService';
-// import DeleteTransactionService from '../services/DeleteTransactionService';
-// import ImportTransactionsService from '../services/ImportTransactionsService';
+import TransactionsRepository from '../repositories/TransactionsRepository';
+import CreateTransactionService from '../services/CreateTransactionService';
+import DeleteTransactionService from '../services/DeleteTransactionService';
+import ImportTransactionsService from '../services/ImportTransactionsService';
 
 const transactionsRouter = Router();
 
 transactionsRouter.get('/', async (request, response) => {
-  // TODO
+  const transactionRep = new TransactionsRepository();
+  const balance = await transactionRep.getBalance();
+  const transactions = await transactionRep.find();
+  return response.json({ transactions, balance });
 });
 
 transactionsRouter.post('/', async (request, response) => {
-  // TODO
+  const {title, value, type, category} = request.body;
+  const createTransactionService = new CreateTransactionService();
+  const transaction = await createTransactionService.execute({title, value, type, category});
+  return  response.json(transaction);
 });
 
 transactionsRouter.delete('/:id', async (request, response) => {
-  // TODO
+  const {id} = request.params;
+  const deleteTransactionService = new DeleteTransactionService();
+
+  await deleteTransactionService.execute({id});
+  return response.send();
 });
 
 transactionsRouter.post('/import', async (request, response) => {
-  // TODO
+  const importTransactionsService = new ImportTransactionsService();
+  return response.json(importTransactionsService.execute());
 });
 
 export default transactionsRouter;

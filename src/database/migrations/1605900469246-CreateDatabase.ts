@@ -1,4 +1,4 @@
-import {MigrationInterface, QueryRunner, Table, TableForeignKey} from "typeorm";
+import {MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey} from "typeorm";
 
 export default class CreateDatabase1605900469246 implements MigrationInterface {
 
@@ -75,21 +75,10 @@ export default class CreateDatabase1605900469246 implements MigrationInterface {
 
         );
 
-       
-        const foreignKeysArray: Array<TableForeignKey> = new Array();
-
-        const foreignKey = new TableForeignKey({
-            name: 'transactions_fk_category_id_from_category',
-            columnNames: ['category_id'],
-            referencedColumnNames: ['id'],
-            referencedTableName: 'category',
-            onDelete: 'SET NULL',
-            onUpdate: 'CASCADE',
-        });
-
-        foreignKeysArray.push(foreignKey);
-
-        await queryRunner.createForeignKeys('transactions', foreignKeysArray)
+       await queryRunner.addColumn("transactions", new TableColumn({
+           name:"category_id",
+           type:"varchar"
+       }));
        
     }
 

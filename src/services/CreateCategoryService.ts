@@ -1,25 +1,26 @@
 import Category from '../models/Category';
-import { Repository } from 'typeorm';
+import { getCustomRepository } from 'typeorm';
+import CategoriesRepository from '../repositories/CategoriesRepository';
 
 interface Request{
     category: string
 }
 
 class CreateCategoryService {
-    categoryRepository = new Repository<Category>();
 
     public async execute({category} : Request): Promise<Category>{
         const title = category.trim();
+        const categoryRepo = getCustomRepository(CategoriesRepository);
 
-        let categoryDB = await this.categoryRepository.findOne({where: { title }})
+        let categoryDB = await categoryRepo.findOne({where: { title }})
 
         if(!categoryDB) {
-            categoryDB = this.categoryRepository.create({ title });
+            categoryDB = categoryRepo.create({ title });
+            await categoryRepo.save(categoryDB);
         }
         
         return categoryDB;
     }
-
 }
 
 export default CreateCategoryService;

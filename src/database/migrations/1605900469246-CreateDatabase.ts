@@ -24,7 +24,7 @@ export default class CreateDatabase1605900469246 implements MigrationInterface {
                         default: "now()"
                     },
                     {
-                        name: "update_at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "now()"
                     }
@@ -56,7 +56,7 @@ export default class CreateDatabase1605900469246 implements MigrationInterface {
                     },
                     {
                         name: "value",
-                        type: "money",
+                        type: "decimal",
                         isNullable: false
                     },
                     {
@@ -65,7 +65,7 @@ export default class CreateDatabase1605900469246 implements MigrationInterface {
                         default: "now()"
                     },
                     {
-                        name: "update_at",
+                        name: "updated_at",
                         type: "timestamp",
                         default: "now()"
                     }
